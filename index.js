@@ -15,7 +15,7 @@ var mysqlConnection = mysql.createConnection({
 
 app.get('/estudiantes', (req, res) => {
     console.log('get estudiantes')
-    mysqlConnection.query('Select * from escuela.estudiante', (err, rows, fields) => {
+    mysqlConnection.query('Select * from estudiante', (err, rows, fields) => {
         if (!err) {
             res.send(rows);
         } else {
@@ -27,7 +27,7 @@ app.get('/estudiantes', (req, res) => {
 //Leer
 app.get('/estudiantes/:id', (req, res) => {
     console.log('get estudiantes')
-    mysqlConnection.query('Select * from escuela.estudiante where id = ?', [req.params.id], (err, rows, fields) => {
+    mysqlConnection.query('Select * from estudiante where id = ?', [req.params.id], (err, rows, fields) => {
         if (!err) {
             res.send(rows);
         } else {
@@ -40,7 +40,7 @@ app.get('/estudiantes/:id', (req, res) => {
 app.post('/estudiantes', (req, res) => {
     let est = req.body;
     console.log('insert estudiantes')
-    mysqlConnection.query('insert into escuela.estudiante (Nombre, Apellido, Edad, Grado) values (?,?,?,?)',
+    mysqlConnection.query('insert into estudiante (Nombre, Apellido, Edad, Grado) values (?,?,?,?)',
         [est.Nombre, est.Apellido, est.Edad, est.Grado], (err, result) => {
             if (!err) {
                 res.send('Creado');
