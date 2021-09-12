@@ -1,15 +1,16 @@
 const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
+const dbConf = require('./configurations/db-conf');
 
 var app = express();
 app.use(bodyParser.json());
 
 var mysqlConnection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "1234",
-    database: "escuela"
+    host: dbConf.host,
+    user: dbConf.user,
+    password: dbConf.password,
+    database: dbConf.database
 });
 
 app.get('/estudiantes', (req, res) => {
@@ -85,4 +86,4 @@ app.delete("/estudiantes/:id", (req, res) => {
 });
 
 
-app.listen(3000);
+app.listen(process.env.PORT ||3000);
