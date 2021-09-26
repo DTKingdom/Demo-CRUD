@@ -1,20 +1,21 @@
 const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
+const dbConf = require('./configurations/db-conf');
 
 var app = express();
 app.use(bodyParser.json());
 
 var mysqlConnection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "1234",
-    database: "escuela"
+    host: dbConf.host,
+    user: dbConf.user,
+    password: dbConf.password,
+    database: dbConf.database
 });
 
 app.get('/estudiantes', (req, res) => {
     console.log('get estudiantes')
-    mysqlConnection.query('Select * from escuela.estudiante', (err, rows, fields) => {
+    mysqlConnection.query('Select * from estudiante', (err, rows, fields) => {
         if (!err) {
             res.send(rows);
         } else {
@@ -26,7 +27,7 @@ app.get('/estudiantes', (req, res) => {
 //Leer
 app.get('/estudiantes/:id', (req, res) => {
     console.log('get estudiantes')
-    mysqlConnection.query('Select * from escuela.estudiante where id = ?', [req.params.id], (err, rows, fields) => {
+    mysqlConnection.query('Select * from estudiante where id = ?', [req.params.id], (err, rows, fields) => {
         if (!err) {
             res.send(rows);
         } else {
@@ -39,7 +40,7 @@ app.get('/estudiantes/:id', (req, res) => {
 app.post('/estudiantes', (req, res) => {
     let est = req.body;
     console.log('insert estudiantes')
-    mysqlConnection.query('insert into escuela.estudiante (Nombre, Apellido, Edad, Grado) values (?,?,?,?)',
+    mysqlConnection.query('insert into estudiante (Nombre, Apellido, Edad, Grado) values (?,?,?,?)',
         [est.Nombre, est.Apellido, est.Edad, est.Grado], (err, result) => {
             if (!err) {
                 res.send('Creado');
@@ -85,4 +86,4 @@ app.delete("/estudiantes/:id", (req, res) => {
 });
 
 
-app.listen(3000);
+app.listen(process.env.PORT ||3000);
